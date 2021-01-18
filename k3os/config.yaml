@@ -1,4 +1,4 @@
-hostname: k3s-m1
+hostname: k3s-s1
 ssh_authorized_keys:
   - github:craigness24
 write_files:
