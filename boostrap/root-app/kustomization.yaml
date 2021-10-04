@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - bootstrap.yaml
 - system.yaml
+- platform.yaml
 - apps.yaml
 
 namespace: argocd
