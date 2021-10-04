@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
 - bootstrap.yaml
-- system.yaml
+- kube-system.yaml
 - platform.yaml
 - apps.yaml
 
