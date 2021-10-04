@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: helloworld-configmap2
-data:
-  myvalue: "Hello World 2!"
