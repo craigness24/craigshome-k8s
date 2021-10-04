@@ -3,10 +3,10 @@ kind: Kustomization
 
 resources:
 - namespace.yaml
-- https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-- https://raw.githubusercontent.com/argoproj-labs/applicationset/stable/manifests/install.yaml
+- argo-cd-install.yaml
+- applicationset-install.yaml
 
-patches:
-- path: argocd-server-deployment-patch.yaml
+patchesStrategicMerge:
+- argocd-server-deployment-patch.yaml
 
 namespace: argocd
