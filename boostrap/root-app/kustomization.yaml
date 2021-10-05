@@ -5,6 +5,6 @@ resources:
 - bootstrap.yaml
 - kube-system.yaml
 - platform.yaml
-- apps.yaml
+- applications.yaml
 
 namespace: argocd
