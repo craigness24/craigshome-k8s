@@ -1,0 +1,140 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: homelab
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  description: ""
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - https://github.com/craigness24/craigshome-k8s.git
+  - https://k8s-at-home.com/charts
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bootstrap
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      directories:
+      - path: bootstrap/*
+      repoURL: https://github.com/craigness24/craigshome-k8s.git
+      revision: main
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+      name: '{{path.basename}}'
+    spec:
+      destination:
+        name: in-cluster
+      project: homelab
+      source:
+        path: '{{path}}'
+        repoURL: https://github.com/craigness24/craigshome-k8s.git
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kube-system
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      directories:
+      - path: kube-system/*
+      repoURL: https://github.com/craigness24/craigshome-k8s.git
+      revision: main
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "2"
+      name: '{{path.basename}}'
+    spec:
+      destination:
+        name: in-cluster
+        namespace: '{{path.basename}}'
+      project: homelab
+      source:
+        path: '{{path}}'
+        repoURL: https://github.com/craigness24/craigshome-k8s.git
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      directories:
+      - path: platform/*
+      repoURL: https://github.com/craigness24/craigshome-k8s.git
+      revision: main
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "3"
+      name: '{{path.basename}}'
+    spec:
+      destination:
+        name: in-cluster
+        namespace: '{{path.basename}}'
+      project: homelab
+      source:
+        path: '{{path}}'
+        repoURL: https://github.com/craigness24/craigshome-k8s.git
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      directories:
+      - path: apps/*
+      repoURL: https://github.com/craigness24/craigshome-k8s.git
+      revision: main
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/sync-wave: "4"
+      name: '{{path.basename}}'
+    spec:
+      destination:
+        name: in-cluster
+        namespace: '{{path.basename}}'
+      project: homelab
+      source:
+        path: '{{path}}'
+        repoURL: https://github.com/craigness24/craigshome-k8s.git
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
