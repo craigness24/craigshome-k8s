@@ -18,7 +18,7 @@ spec:
       destination:
         name: in-cluster
         namespace: '{{path.basename}}'
-      project: default
+      project: homelab
       source:
         repoURL: https://github.com/craigness24/craigshome-k8s.git
         path: '{{path}}'
