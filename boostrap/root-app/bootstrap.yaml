@@ -5,7 +5,7 @@ metadata:
 spec:
   generators:
   - git:
-      repoURL: https://github.com/craigness24/craigshome-k8s.git
+      repoURL: https://github.com/craigness24/craigshome-k8s/
       revision: main
       directories:
       - path: bootstrap/*
@@ -19,7 +19,7 @@ spec:
         name: in-cluster
       project: homelab
       source:
-        repoURL: https://github.com/craigness24/craigshome-k8s.git
+        repoURL: https://github.com/craigness24/craigshome-k8s/
         path: '{{path}}'
       syncPolicy:
         automated:
