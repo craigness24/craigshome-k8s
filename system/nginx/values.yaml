@@ -5,8 +5,8 @@ ingress-nginx:
     kind: DaemonSet
     metrics:
       enabled: true
-    publishService:
-      enabled: false
+    # publishService:
+    #   enabled: false
     # extraArgs:
     #   default-ssl-certificate: "nginx/default-ssl-certificate"
     service:
