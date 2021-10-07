@@ -22,5 +22,4 @@ home-assistant:
         - path: /
           pathType: Prefix
           service:
-            name: web
             port: 8123
