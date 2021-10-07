@@ -21,4 +21,8 @@ k3os:
   k3s_args:
     - server
     - "--no-deploy"
+    - "servicelb" 
+    - "--no-deploy" 
     - "traefik"
+    - "--node-name=k3s-s1"
+
