@@ -20,8 +20,7 @@ home-assistant:
         paths:
         - path: /
           pathType: Prefix
-          backend:
-            service:
-              name: web
-              port: 
-                number: 8123
+          service:
+            name: web
+            port: 
+              number: 8123
