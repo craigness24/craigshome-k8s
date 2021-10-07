@@ -1,6 +1,6 @@
 apiVersion: v2
-name: mosquitto
-version: 4.0.1
+name: parent-mosquitto
+version: 0.0.1
 dependencies:
 - name: mosquitto
   version: 4.0.1

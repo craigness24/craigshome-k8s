@@ -1,6 +1,6 @@
 apiVersion: v2
-name: metallb
-version: 0.10.2
+name: parent-metallb
+version: 0.0.1
 dependencies:
 - name: metallb
   version: 0.10.2
