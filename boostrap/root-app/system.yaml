@@ -18,7 +18,7 @@ spec:
     spec:
       destination:
         server: https://kubernetes.default.svc
-        namespace: system
+        namespace: '{{path.basename}}'
       project: homelab
       source:
         repoURL: https://github.com/craigness24/craigshome-k8s

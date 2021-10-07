@@ -4,4 +4,4 @@ mosquitto:
   service:
     main:
       type: LoadBalancer
-      loadBalancerIP: 192.168.1.151
+      loadBalancerIP: 192.168.1.10
