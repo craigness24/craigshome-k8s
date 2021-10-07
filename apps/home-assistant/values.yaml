@@ -10,8 +10,6 @@ home-assistant:
   service:
     main:
       type: LoadBalancer
-      http:
-        targetPort: 8123
       #loadBalancerIP: 192.168.1.11
   ingress:
     main:
@@ -23,3 +21,5 @@ home-assistant:
         paths:
         - path: /
           pathType: Prefix
+          service:
+            port: 8123
