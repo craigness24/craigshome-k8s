@@ -10,7 +10,8 @@ ingress-nginx:
     # extraArgs:
     #   default-ssl-certificate: "nginx/default-ssl-certificate"
     service:
-      enabled: false
+      loadBalancerIP: 192.168.1.24
+      externalTrafficPolicy: Local
     resources:
       limits:
         cpu: 100m
