@@ -75,11 +75,4 @@ home-assistant:
     requests:
       cpu: 100m
       memory: 1000Mi
-  postgresql:
-    enabled: true
-    postgresqlUsername: home-assistant
-    postgresqlDatabase: home-assistant
-    persistence:
-      enabled: true
-      storageClassName: local-path
-
+      
