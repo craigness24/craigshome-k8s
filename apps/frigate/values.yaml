@@ -300,11 +300,11 @@ frigate:
 
   persistence:
     data:
-      enabled: true
-      size: 10Gi
-      ## Do not delete the pvc upon helm uninstall
-      skipuninstall: true
-      existingClaim: frigate
+      enabled: false
+      # size: 10Gi
+      # ## Do not delete the pvc upon helm uninstall
+      # skipuninstall: true
+      # existingClaim: frigate
 
   resources:
     {}
