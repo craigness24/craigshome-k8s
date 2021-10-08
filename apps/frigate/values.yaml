@@ -50,7 +50,7 @@ frigate:
 
 
     mqtt:
-      host: mosquitto.default.svc.cluster.local
+      host: mosquitto.mosquitto.svc.cluster.local
       port: 1883
       # WARNING: must be unique if you are running multiple instances
       topic_prefix: frigate
