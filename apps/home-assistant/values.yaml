@@ -7,12 +7,13 @@ home-assistant:
     TZ: "America/Chicago"
   hostNetwork: true
   dnsPolicy: ClusterFirstWithHostNet
-  # service:
-  #   main:
+  service:
+    main:
   #     type: LoadBalancer
-      # ports:
-      #   http:
-      #     targetPort: 80
+      ports:
+        http:
+          port: 80
+          targetPort: 8123
 
       #loadBalancerIP: 192.168.1.11
   ingress:
@@ -27,4 +28,4 @@ home-assistant:
           pathType: Prefix
           service:
             name: home-assistant
-            port: 8123
+            port: 80
