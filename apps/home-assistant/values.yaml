@@ -26,6 +26,7 @@ home-assistant:
         paths:
         - path: /
           pathType: Prefix
+
           # service:
           #   name: home-assistant
           #   port: 80
