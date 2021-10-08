@@ -7,9 +7,9 @@ home-assistant:
     TZ: "America/Chicago"
   hostNetwork: true
   dnsPolicy: ClusterFirstWithHostNet
-  service:
-    main:
-      type: LoadBalancer
+  # service:
+  #   main:
+  #     type: LoadBalancer
       # ports:
       #   http:
       #     targetPort: 80
