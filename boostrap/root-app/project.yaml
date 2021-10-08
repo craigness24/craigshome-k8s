@@ -14,3 +14,4 @@ spec:
   sourceRepos:
   - https://github.com/craigness24/craigshome-k8s
   - https://k8s-at-home.com/charts
+  - https://github.com/blakeblackshear/blakeshome-charts/tree/master/charts
