@@ -1,0 +1,329 @@
+frigate:
+  # Default values for frigate.
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+
+  replicaCount: 1
+
+  # upgrade strategy type (e.g. Recreate or RollingUpdate)
+  strategyType: Recreate
+
+  image:
+    repository: blakeblackshear/frigate
+    tag: stable-amd64
+    pullPolicy: IfNotPresent
+
+  coral:
+    enabled: true
+    hostPath: /dev/bus/usb
+
+  # Specify image that generates the config folder containing the Frigate config file, masks (if specified), etc.
+  initContainer:
+    image:
+      repository: busybox
+      tag: latest
+      pullPolicy: IfNotPresent
+
+  # reference to configMap that contains the binary data of the masks to be copied into the container
+  # this requires that generateConfigFolder.enabled = true
+  # see https://github.com/blakeblackshear/frigate#masks-and-limiting-detection-to-a-certain-area for more info
+  masksConfigMap: {}
+
+  shmSize: 500Mi
+
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+
+  # frigate configuration - see https://github.com/blakeblackshear/frigate/blob/master/config/config.yml for example
+  config: |
+    # Optional: detectors configuration
+    # USB Coral devices will be auto detected with CPU fallback
+    detectors:
+      # Required: name of the detector
+      coral:
+        # Required: type of the detector
+        # Valid values are 'edgetpu' (requires device property below) and 'cpu'.
+        type: edgetpu
+        # Optional: device name as defined here: https://coral.ai/docs/edgetpu/multiple-edgetpu/#using-the-tensorflow-lite-python-api
+        device: usb
+
+
+    mqtt:
+      host: mosquitto.default.svc.cluster.local
+      port: 1883
+      # WARNING: must be unique if you are running multiple instances
+      topic_prefix: frigate
+      client_id: frigate
+
+
+
+    # Optional: Global ffmpeg args
+    # "ffmpeg" + global_args + input_args + "-i" + input + output_args
+    ffmpeg:
+      # Optional: global ffmpeg args (default: shown below)
+      global_args:
+        - -hide_banner
+        - -loglevel
+        - info
+      # Optional: global hwaccel args (default: shown below)
+      # NOTE: See hardware acceleration docs for your specific device
+      hwaccel_args:
+        - -hwaccel
+        - vaapi
+        - -hwaccel_device
+        - /dev/dri/renderD128
+        - -hwaccel_output_format
+        - yuv420p
+      # Optional: global input args (default: shown below)
+      input_args:
+        - -avoid_negative_ts
+        - make_zero
+        - -flags
+        - low_delay
+        - -strict
+        - experimental
+        - -fflags
+        - +genpts+discardcorrupt
+        - -rtsp_transport
+        - tcp
+        - -stimeout
+        - '5000000'
+        - -use_wallclock_as_timestamps
+        - '1'
+
+    # Optional: Global object filters for all cameras.
+    # NOTE: can be overridden at the camera level
+    objects:
+      # Optional: list of objects to track from labelmap.txt (default: shown below)
+      track:
+        - person
+      # Optional: filters to reduce false positives for specific object types
+      # filters:
+        # person:
+          # Optional: minimum width*height of the bounding box for the detected object (default: 0)
+          # min_area: 5000
+          # # Optional: maximum width*height of the bounding box for the detected object (default: max_int)
+          # max_area: 100000
+          # # Optional: minimum score for the object to initiate tracking (default: shown below)
+          # min_score: 0.5
+          # # Optional: minimum decimal percentage for tracked object's computed score to be considered a true positive (default: shown below)
+          # threshold: 0.85
+
+    # Required: configuration section for cameras
+    cameras:
+      # Required: name of the camera
+      BFence:
+        # Required: ffmpeg settings for the camera
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.107/ch01/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch01/0
+              roles:
+                - rtmp
+        # motion:
+        #   mask:
+        #     - 630,297,0,423,0,257,0,0,1600,0,1920,0,1920,243
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+      Utils:
+        ffmpeg:
+          inputs: 
+            - path: rtsp://192.168.1.107/ch02/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch02/0
+              roles:
+                - rtmp
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+      BYard:
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.107/ch03/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch03/0
+              roles:
+                - rtmp
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+        mqtt:
+          crop: True
+          height: 300
+        snapshots:
+          timestamp: True
+          bounding_box: True
+      Driveway:
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.107/ch04/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch04/0
+              roles:
+                - rtmp
+        # motion:
+        #   mask:
+        #     - 1023,0,1920,0,1920,548,1177,408,649,323,537,302,122,292,0,248,0,0
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+      BPorch:
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.107/ch05/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch05/0
+              roles:
+                - rtmp
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+      Garage:
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.107/ch06/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch06/0
+              roles:
+                - rtmp
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+      Brzeway:
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.107/ch07/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch07/0
+              roles:
+                - rtmp
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+      FYard:
+        ffmpeg:
+          inputs:
+            - path: rtsp://192.168.1.107/ch08/1
+              roles:
+                - detect
+            - path: rtsp://192.168.1.107/ch08/0
+              roles:
+                - rtmp
+        height: 240
+        width: 352
+        fps: 5
+        best_image_timeout: 60
+
+  # Probes configuration
+  probes:
+    liveness:
+      enabled: true
+      initialDelaySeconds: 30
+      failureThreshold: 5
+      timeoutSeconds: 10
+    readiness:
+      enabled: true
+      initialDelaySeconds: 30
+      failureThreshold: 5
+      timeoutSeconds: 10
+    startup:
+      enabled: false
+      failureThreshold: 30
+      periodSeconds: 10
+
+  # service:
+  #   type: NodePort
+  #   port: 5000
+  #   nodePort: 30123
+    # additionalPorts:
+    #   port:
+    #     name: "rtmp"
+    #     port: 1935
+    #     protocol: "RTMP"
+    #     nodePort: 30135
+        
+  # service:
+  #   type: LoadBalancer
+  #   port: 5000
+  #   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
+  #   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+  #   ##
+  #   # nodePort: 30500
+  #   ## Provide any additional annotations which may be required. This can be used to
+  #   ## set the LoadBalancer service type to internal only.
+  #   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
+  #   ##
+  #   annotations: {}
+  #   labels: {}
+  #   ## Use loadBalancerIP to request a specific static IP,
+  #   ## otherwise leave blank
+  #   ##
+  #   loadBalancerIP:
+  #   # loadBalancerSourceRanges: []
+  #   ## Set the externalTrafficPolicy in the Service to either Cluster or Local
+  #   externalTrafficPolicy: Local
+  #   additionalPorts:
+
+  # service:
+  #   type: LoadBalancer
+  #   port: 5000
+  #   # nodePort: 30213
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+    hosts:
+      - frigate.k3s.home  
+    path: /
+  #   tls: []
+    #  - secretName: chart-example-tls
+    #    hosts:
+    #      - chart-example.local
+
+  persistence:
+    data:
+      enabled: true
+      size: 10Gi
+      ## Do not delete the pvc upon helm uninstall
+      skipuninstall: true
+      existingClaim: frigate
+
+  resources:
+    {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  podAnnotations: {}
+
