@@ -1,39 +1,49 @@
 frigate:
-  # Default values for frigate.
-  # This is a YAML-formatted file.
-  # Declare variables to be passed into your templates.
 
-  replicaCount: 1
+  env:
+    TZ: "America/Chicago"
 
-  # upgrade strategy type (e.g. Recreate or RollingUpdate)
-  strategyType: Recreate
-
-  image:
-    repository: blakeblackshear/frigate
-    tag: stable-amd64
-    pullPolicy: IfNotPresent
-
-  coral:
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.1.15
+  ingress:
     enabled: true
-    hostPath: /dev/bus/usb
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+    hosts:
+      - frigate.k3s.home  
+    path: /
+  
+  securityContext:
+    # -- (bool) Privileged securityContext may be required if USB devices are accessed directly through the host machine
+    privileged: false
 
-  # Specify image that generates the config folder containing the Frigate config file, masks (if specified), etc.
-  initContainer:
-    image:
-      repository: busybox
-      tag: latest
-      pullPolicy: IfNotPresent
+  persistence:
+    data:
+      enabled: false
+    usb:
+      enabled: true
+      # size: 10Gi
+      # ## Do not delete the pvc upon helm uninstall
+      # skipuninstall: true
+      # existingClaim: frigate
 
-  # reference to configMap that contains the binary data of the masks to be copied into the container
-  # this requires that generateConfigFolder.enabled = true
-  # see https://github.com/blakeblackshear/frigate#masks-and-limiting-detection-to-a-certain-area for more info
-  masksConfigMap: {}
-
-  shmSize: 500Mi
-
-  imagePullSecrets: []
-  nameOverride: ""
-  fullnameOverride: ""
+  # Probes configuration
+  probes:
+    liveness:
+      enabled: true
+      initialDelaySeconds: 30
+      failureThreshold: 5
+      timeoutSeconds: 10
+    readiness:
+      enabled: true
+      initialDelaySeconds: 30
+      failureThreshold: 5
+      timeoutSeconds: 10
+    startup:
+      enabled: false
+      failureThreshold: 30
+      periodSeconds: 10
 
   # frigate configuration - see https://github.com/blakeblackshear/frigate/blob/master/config/config.yml for example
   config: |
@@ -57,6 +67,22 @@ frigate:
       client_id: frigate
 
 
+    # Optional: birdseye configuration
+    birdseye:
+      # Optional: Enable birdseye view (default: shown below)
+      enabled: True
+      # Optional: Width of the output resolution (default: shown below)
+      width: 1280
+      # Optional: Height of the output resolution (default: shown below)
+      height: 720
+      # Optional: Encoding quality of the mpeg1 feed (default: shown below)
+      # 1 is the highest quality, and 31 is the lowest. Lower quality feeds utilize less CPU resources.
+      quality: 8
+      # Optional: Mode of the view. Available options are: objects, motion, and continuous
+      #   objects - cameras are included if they have had a tracked object within the last 30 seconds
+      #   motion - cameras are included if motion was detected in the last 30 seconds
+      #   continuous - all cameras are included always
+      mode: objects
 
     # Optional: Global ffmpeg args
     # "ffmpeg" + global_args + input_args + "-i" + input + output_args
@@ -65,7 +91,7 @@ frigate:
       global_args:
         - -hide_banner
         - -loglevel
-        - info
+        - warning
       # Optional: global hwaccel args (default: shown below)
       # NOTE: See hardware acceleration docs for your specific device
       hwaccel_args:
@@ -91,6 +117,20 @@ frigate:
         - '5000000'
         - -use_wallclock_as_timestamps
         - '1'
+
+    detect:
+      # Optional: width of the frame for the input with the detect role (default: shown below)
+      width: 352
+      # Optional: height of the frame for the input with the detect role (default: shown below)
+      height: 240
+      # Optional: desired fps for your camera for the input with the detect role (default: shown below)
+      # NOTE: Recommended value of 5. Ideally, try and reduce your FPS on the camera.
+      fps: 5
+      # Optional: enables detection for the camera (default: True)
+      # This value can be set via MQTT and will be updated in startup based on retained value
+      enabled: True
+      # Optional: Number of frames without a detection before frigate considers an object to be gone. (default: 5x the frame rate)
+      max_disappeared: 25
 
     # Optional: Global object filters for all cameras.
     # NOTE: can be overridden at the camera level
@@ -126,9 +166,6 @@ frigate:
         # motion:
         #   mask:
         #     - 630,297,0,423,0,257,0,0,1600,0,1920,0,1920,243
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
       Utils:
         ffmpeg:
@@ -139,9 +176,6 @@ frigate:
             - path: rtsp://192.168.1.107/ch02/0
               roles:
                 - rtmp
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
       BYard:
         ffmpeg:
@@ -152,16 +186,10 @@ frigate:
             - path: rtsp://192.168.1.107/ch03/0
               roles:
                 - rtmp
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
         mqtt:
           crop: True
           height: 300
-        snapshots:
-          timestamp: True
-          bounding_box: True
       Driveway:
         ffmpeg:
           inputs:
@@ -174,9 +202,6 @@ frigate:
         # motion:
         #   mask:
         #     - 1023,0,1920,0,1920,548,1177,408,649,323,537,302,122,292,0,248,0,0
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
       BPorch:
         ffmpeg:
@@ -187,9 +212,6 @@ frigate:
             - path: rtsp://192.168.1.107/ch05/0
               roles:
                 - rtmp
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
       Garage:
         ffmpeg:
@@ -200,9 +222,6 @@ frigate:
             - path: rtsp://192.168.1.107/ch06/0
               roles:
                 - rtmp
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
       Brzeway:
         ffmpeg:
@@ -213,9 +232,6 @@ frigate:
             - path: rtsp://192.168.1.107/ch07/0
               roles:
                 - rtmp
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
       FYard:
         ffmpeg:
@@ -226,102 +242,4 @@ frigate:
             - path: rtsp://192.168.1.107/ch08/0
               roles:
                 - rtmp
-        height: 240
-        width: 352
-        fps: 5
         best_image_timeout: 60
-
-  # Probes configuration
-  probes:
-    liveness:
-      enabled: true
-      initialDelaySeconds: 30
-      failureThreshold: 5
-      timeoutSeconds: 10
-    readiness:
-      enabled: true
-      initialDelaySeconds: 30
-      failureThreshold: 5
-      timeoutSeconds: 10
-    startup:
-      enabled: false
-      failureThreshold: 30
-      periodSeconds: 10
-
-  # service:
-  #   type: NodePort
-  #   port: 5000
-  #   nodePort: 30123
-    # additionalPorts:
-    #   port:
-    #     name: "rtmp"
-    #     port: 1935
-    #     protocol: "RTMP"
-    #     nodePort: 30135
-        
-  # service:
-  #   type: LoadBalancer
-  #   port: 5000
-  #   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
-  #   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
-  #   ##
-  #   # nodePort: 30500
-  #   ## Provide any additional annotations which may be required. This can be used to
-  #   ## set the LoadBalancer service type to internal only.
-  #   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#internal-load-balancer
-  #   ##
-  #   annotations: {}
-  #   labels: {}
-  #   ## Use loadBalancerIP to request a specific static IP,
-  #   ## otherwise leave blank
-  #   ##
-  #   loadBalancerIP:
-  #   # loadBalancerSourceRanges: []
-  #   ## Set the externalTrafficPolicy in the Service to either Cluster or Local
-  #   externalTrafficPolicy: Local
-  #   additionalPorts:
-
-  service:
-    type: LoadBalancer
-    loadBalancerIP: 192.168.1.15
-  ingress:
-    enabled: true
-    annotations:
-      kubernetes.io/ingress.class: "nginx"
-    hosts:
-      - frigate.k3s.home  
-    path: /
-  #   tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-
-  persistence:
-    data:
-      enabled: false
-      # size: 10Gi
-      # ## Do not delete the pvc upon helm uninstall
-      # skipuninstall: true
-      # existingClaim: frigate
-
-  resources:
-    {}
-    # We usually recommend not to specify default resources and to leave this as a conscious
-    # choice for the user. This also increases chances charts run on environments with little
-    # resources, such as Minikube. If you do want to specify resources, uncomment the following
-    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-  podAnnotations: {}
-
