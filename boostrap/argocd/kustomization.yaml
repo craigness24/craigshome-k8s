@@ -8,5 +8,6 @@ resources:
 
 patchesStrategicMerge:
 - argocd-server-deployment-patch.yaml
+- argocd-cm-patch.yaml
 
 namespace: argocd
