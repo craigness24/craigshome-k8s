@@ -281,11 +281,9 @@ frigate:
   #   externalTrafficPolicy: Local
   #   additionalPorts:
 
-  # service:
-  #   type: LoadBalancer
-  #   port: 5000
-  #   # nodePort: 30213
-
+  service:
+    type: LoadBalancer
+    loadBalancerIP: 192.168.1.15
   ingress:
     enabled: true
     annotations:
