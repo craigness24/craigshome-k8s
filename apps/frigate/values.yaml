@@ -8,10 +8,6 @@ frigate:
   env:
     TZ: "America/New_York"
 
-  service:
-    main:
-      type: LoadBalancer
-      loadBalancerIP: 192.168.1.15
   ingress:
     enabled: true
     annotations:
@@ -19,10 +15,8 @@ frigate:
     hosts:
       - frigate.k3s.home  
     path: /
-  
-  securityContext:
-    # -- (bool) Privileged securityContext may be required if USB devices are accessed directly through the host machine
-    privileged: false
+
+  shmSize: 1Gi
 
   persistence:
     data:
@@ -33,23 +27,17 @@ frigate:
       # ## Do not delete the pvc upon helm uninstall
       # skipuninstall: true
       # existingClaim: frigate
+  extraVolumes:
+    - name: cache
+      emptyDir:
+        medium: Memory
+  extraVolumeMounts:
+    - mountPath: /tmp/cache
+      name: cache
 
-  # Probes configuration
   probes:
-    liveness:
-      enabled: true
-      initialDelaySeconds: 30
-      failureThreshold: 5
-      timeoutSeconds: 10
-    readiness:
-      enabled: true
-      initialDelaySeconds: 30
-      failureThreshold: 5
-      timeoutSeconds: 10
     startup:
-      enabled: false
-      failureThreshold: 30
-      periodSeconds: 10
+      enabled: true
 
   # frigate configuration - see https://github.com/blakeblackshear/frigate/blob/master/config/config.yml for example
   config: |
