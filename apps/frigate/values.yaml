@@ -9,10 +9,12 @@ frigate:
     TZ: "America/New_York"
 
   ingress:
-    enabled: true
+    enabled: false
     annotations:
       kubernetes.io/ingress.class: nginx
-    hosts: 
+      # kubernetes.io/tls-acme: "true"
+    path: /
+    hosts:
       - frigate.k3s.home
   
   shmSize: 1Gi
