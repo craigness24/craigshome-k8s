@@ -240,6 +240,7 @@ frigate:
             - path: rtsp://192.168.1.107/ch07/0
               roles:
                 - rtmp
+                - record
         best_image_timeout: 60
       FYard:
         ffmpeg:
