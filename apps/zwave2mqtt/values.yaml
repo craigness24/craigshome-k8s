@@ -17,8 +17,9 @@ zwavejs2mqtt:
 
   service:
     main:
-      websocket:
-        enabled: true
+      ports:
+        websocket:
+          enabled: true
   ingress:
     main:
       enabled: true
