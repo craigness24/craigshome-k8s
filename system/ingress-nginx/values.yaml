@@ -11,9 +11,9 @@ ingress-nginx:
     #   default-ssl-certificate: "nginx/default-ssl-certificate"
     service:
       loadBalancerIP: 192.168.1.24
-      externalTrafficPolicy: Local
+      externalTrafficPolicy: Cluster
     ingressClassResource:
-        default: false
+        default: true
     resources:
       limits:
         cpu: 100m
