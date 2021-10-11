@@ -1,0 +1,53 @@
+zwavejs2mqtt:
+  #
+  # IMPORTANT NOTE
+  #
+  # This chart inherits from our common library chart. You can check the default values/options here:
+  # https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/values.yaml
+  #
+  
+  image:
+    repository: zwavejs/zwavejs2mqtt
+    tag: 5.8.0
+    pullPolicy: IfNotPresent
+
+  # -- environment variables. See [image docs](https://zwave-js.github.io/zwavejs2mqtt/#/guide/env-vars) for more details.
+  env:
+    TZ: "America/Chicago"
+
+  ingress:
+    main:
+      enabled: true
+      annotations:
+          kubernetes.io/ingress.class: nginx
+      hosts:
+        - host: "zwave.k3s.home"
+          paths:
+          - path: /
+
+  securityContext:
+    # -- (bool) Privileged securityContext may be required if USB devices are accessed directly through the host machine
+    privileged: true
+
+  persistence:
+    config:
+      enabled: true
+      mountPath: /usr/src/app/store
+      storageClassName: local-path
+      accessMode: ReadWriteOnce
+      size: "1Gi"
+      skipuninstall: true
+    usb:
+      enabled: true
+      type: hostPath
+      hostPath: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_6898985e0845eb118cacaa52b003b68c-if00-port0
+
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: app
+  #           operator: In
+  #           values:
+  #           - zwave-controller
