@@ -5,7 +5,7 @@ zwavejs2mqtt:
   # This chart inherits from our common library chart. You can check the default values/options here:
   # https://github.com/k8s-at-home/library-charts/tree/main/charts/stable/common/values.yaml
   #
-  
+
   image:
     repository: zwavejs/zwavejs2mqtt
     tag: 5.8.0
@@ -15,6 +15,10 @@ zwavejs2mqtt:
   env:
     TZ: "America/Chicago"
 
+  service:
+    main:
+      websocket:
+        enabled: true
   ingress:
     main:
       enabled: true
