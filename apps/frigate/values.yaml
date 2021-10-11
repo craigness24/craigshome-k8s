@@ -21,8 +21,6 @@ frigate:
   persistence:
     data:
       enabled: false
-    usb:
-      enabled: true
       # size: 10Gi
       # ## Do not delete the pvc upon helm uninstall
       # skipuninstall: true
