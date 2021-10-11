@@ -35,7 +35,7 @@ frigate:
 
   probes:
     startup:
-      enabled: true
+      enabled: false
 
   # frigate configuration - see https://github.com/blakeblackshear/frigate/blob/master/config/config.yml for example
   config: |
