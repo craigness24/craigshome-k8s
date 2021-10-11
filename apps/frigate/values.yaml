@@ -12,8 +12,7 @@ frigate:
     enabled: true
     annotations:
       kubernetes.io/ingress.class: "nginx"
-    hosts:
-      - frigate.k3s.home  
+    hosts: [frigate.k3s.home]
     path: /
 
   shmSize: 1Gi
