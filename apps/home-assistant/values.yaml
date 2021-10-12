@@ -19,7 +19,7 @@ home-assistant:
     main:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: traefik
+        kubernetes.io/ingress.class: traefik-internal
         nginx.org/websocket-services: home-assistant
       hosts:
       - host: hass.k3s.home
