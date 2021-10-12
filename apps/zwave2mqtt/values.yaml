@@ -24,7 +24,7 @@ zwavejs2mqtt:
     main:
       enabled: true
       annotations:
-          kubernetes.io/ingress.class: nginx
+          kubernetes.io/ingress.class: traefik
       hosts:
         - host: "zwave.k3s.home"
           paths:
