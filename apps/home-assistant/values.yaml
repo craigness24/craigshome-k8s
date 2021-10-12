@@ -59,7 +59,7 @@ home-assistant:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: traefik
+          kubernetes.io/ingress.class: "traefik-internal"
         hosts:
         - host: hass-vscode.k3s.home
           paths:
