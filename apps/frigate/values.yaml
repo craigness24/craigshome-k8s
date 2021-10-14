@@ -52,7 +52,7 @@ frigate:
         device: usb
 
     mqtt:
-      host: mosquitto.platform.svc.cluster.local
+      host: mosquitto.platform
       port: 1883
       # WARNING: must be unique if you are running multiple instances
       topic_prefix: frigate
