@@ -171,6 +171,7 @@ frigate:
             - path: rtsp://192.168.1.107/ch01/0
               roles:
                 - rtmp
+                - record
         # motion:
         #   mask:
         #     - 630,297,0,423,0,257,0,0,1600,0,1920,0,1920,243
@@ -184,6 +185,7 @@ frigate:
             - path: rtsp://192.168.1.107/ch02/0
               roles:
                 - rtmp
+                - record
         best_image_timeout: 60
       BYard:
         ffmpeg:
@@ -194,6 +196,7 @@ frigate:
             - path: rtsp://192.168.1.107/ch03/0
               roles:
                 - rtmp
+                - record
         best_image_timeout: 60
         mqtt:
           crop: True
@@ -207,6 +210,7 @@ frigate:
             - path: rtsp://192.168.1.107/ch04/0
               roles:
                 - rtmp
+                - record
         # motion:
         #   mask:
         #     - 1023,0,1920,0,1920,548,1177,408,649,323,537,302,122,292,0,248,0,0
@@ -230,6 +234,7 @@ frigate:
             - path: rtsp://192.168.1.107/ch06/0
               roles:
                 - rtmp
+                - record
         best_image_timeout: 60
       Brzeway:
         ffmpeg:
@@ -251,4 +256,5 @@ frigate:
             - path: rtsp://192.168.1.107/ch08/0
               roles:
                 - rtmp
+                - record
         best_image_timeout: 60
