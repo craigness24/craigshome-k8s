@@ -346,7 +346,7 @@ traefik:
     # type, selector or ports entries.
     spec:
       externalTrafficPolicy: Cluster
-      loadBalancerIP: "192.168.1.25"
+      loadBalancerIP: "172.16.20.9"
       # clusterIP: "2.3.4.5"
     loadBalancerSourceRanges: []
       # - 192.168.0.1/32
