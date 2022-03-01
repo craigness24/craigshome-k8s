@@ -10,7 +10,7 @@ ingress-nginx:
     # extraArgs:
     #   default-ssl-certificate: "nginx/default-ssl-certificate"
     service:
-      loadBalancerIP: 172.16.20.11
+      loadBalancerIP: 172.16.20.15
       externalTrafficPolicy: Cluster
     ingressClassResource:
         default: true
