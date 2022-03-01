@@ -5,4 +5,4 @@ metallb:
       protocol: layer2
       addresses:
       # TODO (optimize) Use metal values for MetalLB values
-      - 172.16.10.10-172.16.10.20
+      - 172.16.20.10-172.16.20.20
