@@ -11,7 +11,8 @@ frigate:
   ingress:
     enabled: true
     annotations:
-      kubernetes.io/ingress.class: "traefik-internal"
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
       # kubernetes.io/tls-acme: "true"
     path: /
     hosts:
