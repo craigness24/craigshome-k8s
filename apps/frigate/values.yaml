@@ -111,7 +111,6 @@ frigate:
 
     record:
       enabled: True
-      retain_days: 0
       events:
         retain:
           default: 10
