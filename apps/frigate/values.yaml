@@ -223,6 +223,7 @@ frigate:
             - path: rtsp://172.16.30.254/ch05/0
               roles:
                 - rtmp
+                - record
         best_image_timeout: 60
       Garage:
         ffmpeg:
