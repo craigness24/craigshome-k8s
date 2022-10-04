@@ -164,10 +164,10 @@ frigate:
         # Required: ffmpeg settings for the camera
         ffmpeg:
           inputs:
-            - path: rtsp://172.16.20.243/ch01/1
+            - path: rtsp://172.16.20.234/ch01/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch01/0
+            - path: rtsp://172.16.20.234/ch01/0
               roles:
                 - rtmp
                 - record
@@ -178,10 +178,10 @@ frigate:
       Utils:
         ffmpeg:
           inputs: 
-            - path: rtsp://172.16.20.243/ch02/1
+            - path: rtsp://172.16.20.234/ch02/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch02/0
+            - path: rtsp://172.16.20.234/ch02/0
               roles:
                 - rtmp
                 - record
@@ -189,10 +189,10 @@ frigate:
       BYard:
         ffmpeg:
           inputs:
-            - path: rtsp://172.16.20.243/ch03/1
+            - path: rtsp://172.16.20.234/ch03/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch03/0
+            - path: rtsp://172.16.20.234/ch03/0
               roles:
                 - rtmp
                 - record
@@ -203,10 +203,10 @@ frigate:
       Driveway:
         ffmpeg:
           inputs:
-            - path: rtsp://172.16.20.243/ch04/1
+            - path: rtsp://172.16.20.234/ch04/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch04/0
+            - path: rtsp://172.16.20.234/ch04/0
               roles:
                 - rtmp
                 - record
@@ -217,10 +217,10 @@ frigate:
       BPorch:
         ffmpeg:
           inputs:
-            - path: rtsp://172.16.20.243/ch05/1
+            - path: rtsp://172.16.20.234/ch05/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch05/0
+            - path: rtsp://172.16.20.234/ch05/0
               roles:
                 - rtmp
                 - record
@@ -228,10 +228,10 @@ frigate:
       Garage:
         ffmpeg:
           inputs:
-            - path: rtsp://172.16.20.243/ch06/1
+            - path: rtsp://172.16.20.234/ch06/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch06/0
+            - path: rtsp://172.16.20.234/ch06/0
               roles:
                 - rtmp
                 - record
@@ -239,10 +239,10 @@ frigate:
       Brzeway:
         ffmpeg:
           inputs:
-            - path: rtsp://172.16.20.243/ch07/1
+            - path: rtsp://172.16.20.234/ch07/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch07/0
+            - path: rtsp://172.16.20.234/ch07/0
               roles:
                 - rtmp
                 - record
@@ -250,10 +250,10 @@ frigate:
       FYard:
         ffmpeg:
           inputs:
-            - path: rtsp://172.16.20.243/ch08/1
+            - path: rtsp://172.16.20.234/ch08/1
               roles:
                 - detect
-            - path: rtsp://172.16.20.243/ch08/0
+            - path: rtsp://172.16.20.234/ch08/0
               roles:
                 - rtmp
                 - record
